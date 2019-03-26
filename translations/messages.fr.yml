@@ -50,6 +50,8 @@ host: co-animateur
 board_member: membre du conseil
 coordinator: coordinateur
 procuration_manager: responsable procuration
+assessor_manager: responsable assésseur
+assessors_manager: Responsable assésseurs
 user: utilisateur
 citizen_project_holder: porteur de projet
 
@@ -121,6 +123,7 @@ dashboard.shortcut.leaflets_posters: 🎨 Tracts et posters
 dashboard.shortcut.my_documents: 📄 Mes documents
 dashboard.shortcut.contact: 🐛 Bug ? Nouveau besoin ? Faites-le nous savoir.
 dashboard.shortcut.procuration_manager_space: 🐼 Espace responsable procuration
+dashboard.shortcut.assessor_manager_space: 🐼 Espace responsable assésseur
 dashboard.shortcut.committee_coordinator_space: 🐸 Espace coordinateur de comité
 dashboard.shortcut.citizen_project_coordinator_space_space: 🐨 Espace coordinateur de projet citoyen
 dashboard.my_skills: Mes compétences
