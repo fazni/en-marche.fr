@@ -89,7 +89,7 @@ class VotePlace
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\AssessorRequest", mappedBy="votePlace")
+     * @ORM\OneToMany(targetEntity="AssessorRequest", mappedBy="votePlace")
      */
     private $assessorRequests;
 

@@ -2,8 +2,10 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Assessor\AssessorRequestFactory;
 use AppBundle\Entity\AssessorOfficeEnum;
 use AppBundle\Entity\AssessorRequest;
+use AppBundle\Entity\VotePlace;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -11,51 +13,58 @@ class LoadAssessorRequestData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+        /** @var VotePlace $votePlaceLilleWazemmes */
         $votePlaceLilleWazemmes = $this->getReference('vote-place-lille-wazemmes');
+
+        /** @var VotePlace $votePlaceLilleJeanZay */
         $votePlaceLilleJeanZay = $this->getReference('vote-place-lille-jean-zay');
 
-        $manager->persist($request1 = $this->createAssessorRequest(
-           'female',
-           'Kepoura',
-           'Adrienne',
-           '14-05-1973',
-           'Lille',
-           '4 avenue du peuple Belge',
-           '59000',
-           'Lille',
-           'Lille',
-           '59350_0108',
-           'adrienne.kepoura@example.fr',
-           '0612345678',
-           'Lille',
-            '59000',
-            AssessorOfficeEnum::HOLDER
-        ));
-
-        $manager->persist($request2 = $this->createAssessorRequest(
-            'female',
-            'Kepoura',
-            'Adrienne',
-            '14-05-1973',
-            'Lille',
-            '4 avenue du peuple Belge',
-            '59000',
-            'Lille',
-            'Lille',
-            '59350_0108',
-            'adrienne.kepoura@example.fr',
-            '0612345678',
-            'Lille',
-            '59000',
-            AssessorOfficeEnum::HOLDER
-        ));
+        $request1 = AssessorRequestFactory::createFromArray([
+            'gender' => 'female',
+            'lastName' => 'Kepoura',
+            'firstName' => 'Adrienne',
+            'birthdate' => '14-05-1973',
+            'birthCity' => 'Lille',
+            'address' => '4 avenue du peuple Belge',
+            'postalCode' => '59000',
+            'city' => 'Lille',
+            'voteCity' => 'Lille',
+            'officeNumber' => '59350_0108',
+            'emailAddress' => 'adrienne.kepoura@example.fr',
+            'phoneNumber' => '0612345678',
+            'assessorCity' => 'Lille',
+            'assessorPostalCode' => '59000',
+            'office' => AssessorOfficeEnum::HOLDER,
+        ]);
 
         $request1->addVotePlaceWish($votePlaceLilleWazemmes);
         $request1->addVotePlaceWish($votePlaceLilleJeanZay);
-        $request2->addVotePlaceWish($votePlaceLilleJeanZay);
-
         $votePlaceLilleWazemmes->addAssessorRequest($request1);
+
+        $manager->persist($request1);
+
+        $request2 = AssessorRequestFactory::createFromArray([
+            'gender' => 'male',
+            'lastName' => 'Kepourapas',
+            'firstName' => 'Adriano',
+            'birthdate' => '14-05-1970',
+            'birthCity' => 'Lille',
+            'address' => '4 avenue du peuple Belge',
+            'postalCode' => '59000',
+            'city' => 'Lille',
+            'voteCity' => 'Lille',
+            'officeNumber' => '59350_0108',
+            'emailAddress' => 'adriano.kepourapas@example.fr',
+            'phoneNumber' => '0612345679',
+            'assessorCity' => 'Lille',
+            'assessorPostalCode' => '59000',
+            'office' => AssessorOfficeEnum::SUBSTITUTE,
+        ]);
+
+        $request2->addVotePlaceWish($votePlaceLilleJeanZay);
         $votePlaceLilleJeanZay->addAssessorRequest($request2);
+
+        $manager->persist($request2);
 
         $manager->flush();
     }

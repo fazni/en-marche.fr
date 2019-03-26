@@ -1,39 +1,17 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace AppBundle\Assessor;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\AssessorOfficeEnum;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 
-/**
- * @ORM\Table(name="assessor_requests")
- * @ORM\Entity
- *
- * @Algolia\Index(autoIndex=false)
- */
-class AssessorRequest
+class AssessorRequestCommand
 {
-    use EntityTimestampableTrait;
-
     /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
-    private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(length=6)
-     *
      * @Assert\NotBlank(message="common.gender.invalid_choice")
      * @Assert\Choice(
      *     callback={"AppBundle\ValueObject\Genders", "all"},
@@ -44,10 +22,6 @@ class AssessorRequest
     private $gender;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank(message="assessor.last_name.not_blank")
      * @Assert\Length(
      *     min=2,
@@ -59,10 +33,6 @@ class AssessorRequest
     private $lastName;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(length=100)
-     *
      * @Assert\NotBlank(message="assessor.first_name.not_blank")
      * @Assert\Length(
      *     min=2,
@@ -74,10 +44,6 @@ class AssessorRequest
     private $firstName;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(length=50, nullable=true)
-     *
      * @Assert\Length(
      *     min=2,
      *     max=50,
@@ -88,77 +54,45 @@ class AssessorRequest
     private $birthName;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="date")
-     *
      * @Assert\NotBlank(message="assessor.birthdate.not_blank")
      * @Assert\Range(max="-18 years", maxMessage="assessor.birthdate.minimum_required_age")
      */
     private $birthdate;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(length=15)
-     *
      * @Assert\Length(max=15)
      */
     private $birthCity;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(length=150)
-     *
      * @Assert\NotBlank(message="common.address.required")
      * @Assert\Length(max=150, maxMessage="common.address.max_length")
      */
     private $address;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(length=15)
-     *
      * @Assert\Length(max=15)
      */
     private $postalCode;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(length=15)
-     *
      * @Assert\Length(max=15)
      */
     private $city;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(length=15)
-     *
      * @Assert\NotBlank(message="assessor.vote_city.not_blank")
      * @Assert\Length(max=15)
      */
     private $voteCity;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(length=10)
-     *
      * @Assert\NotBlank(message="assessor.office_number.not_blank")
      * @Assert\Length(max=10)
      */
     private $officeNumber;
 
     /**
-     * @var string
-     *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
@@ -166,49 +100,29 @@ class AssessorRequest
     private $emailAddress;
 
     /**
-     * @var PhoneNumber
-     *
-     * @ORM\Column(type="phone_number")
-     *
      * @Assert\NotBlank(message="common.phone_number.required")
      * @AssertPhoneNumber(defaultRegion="FR")
      */
     private $phone;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(length=15)
-     *
      * @Assert\NotBlank(message="assessor.assessor_city.not_blank")
      * @Assert\Length(max=15)
      */
     private $assessorCity;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(length=15)
-     *
      * @Assert\Length(max=15)
      */
     private $assessorPostalCode;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(length=2)
-     *
      * @Assert\NotBlank
      * @AssertUnitedNationsCountry(message="common.country.invalid")
      */
     private $assessorCountry = 'FR';
 
     /**
-     * @var string
-     *
-     * @ORM\Column(length=15)
-     *
      * @Assert\NotBlank(message="assessor.office.invalid_choice")
      * @Assert\Choice(
      *     callback={"AppBundle\Entity\AssessorOfficeEnum", "toArray"},
@@ -219,91 +133,23 @@ class AssessorRequest
     private $office = AssessorOfficeEnum::SUBSTITUTE;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank(message="common.recaptcha.invalid_message")
      * @AssertRecaptcha
      */
     public $recaptcha = '';
 
-    /**
-     * @var VotePlace
-     *
-     * @ORM\ManyToOne(targetEntity="VotePlace", inversedBy="assessorRequests")
-     */
-    private $votePlace;
+    private $votePlaceWishes = [];
 
     /**
-     * @var ArrayCollection
+     * Handled by the workflow.
      *
-     * @ORM\ManyToMany(targetEntity="VotePlace")
-     * @ORM\JoinTable(name="assessor_requests_vote_place_wishes")
+     * @var string
      */
-    private $votePlaceWishes;
+    public $marking;
 
     public function __construct()
     {
         $this->phone = static::createPhoneNumber();
-        $this->votePlaceWishes = new ArrayCollection();
-    }
-
-    public static function create(
-        string $gender,
-        string $lastName,
-        string $firstName,
-        string $birthDate,
-        string $birthCity,
-        string $address,
-        string $postalCode,
-        string $city,
-        string $voteCity,
-        string $officeNumber,
-        string $emailAddress,
-        string $phoneNumber,
-        string $assessorCity,
-        string $assessorPostalCode,
-        string $office = AssessorOfficeEnum::SUBSTITUTE,
-        string $birthName = null,
-        string $assessorCountry = 'FR'
-    ): AssessorRequest {
-        $assessor = new self();
-
-        $assessor->setGender($gender);
-        $assessor->setLastName($lastName);
-        $assessor->setFirstName($firstName);
-        $assessor->setBirthName($birthName);
-        $assessor->setBirthdate(new \DateTime($birthDate));
-        $assessor->setBirthCity($birthCity);
-        $assessor->setAddress($address);
-        $assessor->setPostalCode($postalCode);
-        $assessor->setCity($city);
-        $assessor->setVoteCity($voteCity);
-        $assessor->setOfficeNumber($officeNumber);
-        $assessor->setEmailAddress($emailAddress);
-        $assessor->getPhone()->setNationalNumber($phoneNumber);
-        $assessor->setAssessorCity($assessorCity);
-        $assessor->setAssessorPostalCode($assessorPostalCode);
-        $assessor->setAssessorCountry($assessorCountry);
-        $assessor->setOffice($office);
-
-        return $assessor;
-    }
-
-    private static function createPhoneNumber(int $countryCode = 33, string $number = null): PhoneNumber
-    {
-        $phone = new PhoneNumber();
-        $phone->setCountryCode($countryCode);
-
-        if ($number) {
-            $phone->setNationalNumber($number);
-        }
-
-        return $phone;
-    }
-
-    public function getId()
-    {
-        return $this->id;
     }
 
     public function getGender(): ?string
@@ -446,12 +292,32 @@ class AssessorRequest
         $this->assessorCity = $assessorCity;
     }
 
-    public function getOffice(): string
+    public function getAssessorPostalCode(): ?string
+    {
+        return $this->assessorPostalCode;
+    }
+
+    public function setAssessorPostalCode(string $assessorPostalCode): void
+    {
+        $this->assessorPostalCode = $assessorPostalCode;
+    }
+
+    public function getAssessorCountry(): ?string
+    {
+        return $this->assessorCountry;
+    }
+
+    public function setAssessorCountry(string $assessorCountry): void
+    {
+        $this->assessorCountry = $assessorCountry;
+    }
+
+    public function getOffice(): ?string
     {
         return $this->office;
     }
 
-    public function setOffice(string $office): void
+    public function setOffice(?string $office): void
     {
         $this->office = $office;
     }
@@ -466,57 +332,30 @@ class AssessorRequest
         $this->recaptcha = $recaptcha;
     }
 
-    public function getVotePlace(): VotePlace
-    {
-        return $this->votePlace;
-    }
-
-    public function setVotePlace(ArrayCollection $votePlaces): void
-    {
-        foreach ($votePlaces as $votePlace) {
-            $this->addVotePlaceWish($votePlace);
-        }
-    }
-
-    public function getVotePlaceWishes(): Collection
+    public function getVotePlaceWishes(): array
     {
         return $this->votePlaceWishes;
     }
 
-    public function setVotePlaceWishes(Collection $votePlaceWishes): void
+    public function setVotePlaceWishes(array $votePlaceWishes): void
     {
         $this->votePlaceWishes = $votePlaceWishes;
     }
 
-    public function addVotePlaceWish(VotePlace $votePlace): void
+    public function hasVotePlaceWishes(): bool
     {
-        if (!$this->votePlaceWishes->contains($votePlace)) {
-            $this->votePlaceWishes->add($votePlace);
+        return !empty($this->votePlaceWishes);
+    }
+
+    private static function createPhoneNumber(int $countryCode = 33, string $number = null): PhoneNumber
+    {
+        $phone = new PhoneNumber();
+        $phone->setCountryCode($countryCode);
+
+        if ($number) {
+            $phone->setNationalNumber($number);
         }
-    }
 
-    public function removeVotePlaceWish(VotePlace $votePlace): void
-    {
-        $this->votePlaceWishes->removeElement($votePlace);
-    }
-
-    public function getAssessorPostalCode(): string
-    {
-        return $this->assessorPostalCode;
-    }
-
-    public function setAssessorPostalCode(string $assessorPostalCode): void
-    {
-        $this->assessorPostalCode = $assessorPostalCode;
-    }
-
-    public function getAssessorCountry(): string
-    {
-        return $this->assessorCountry;
-    }
-
-    public function setAssessorCountry(string $assessorCountry): void
-    {
-        $this->assessorCountry = $assessorCountry;
+        return $phone;
     }
 }

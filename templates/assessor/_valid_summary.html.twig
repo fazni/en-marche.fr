@@ -1,0 +1,20 @@
+{% block javascripts %}
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+{% endblock %}
+
+<form method="post" name="app_procuration_proposal">
+    {{ form_errors(form) }}
+
+    <div>
+        <h4>Valider les informations 3/3</h4>
+    </div>
+
+    {{ dump(assessorRequest) }}
+
+    <div class="text--center b__nudge--top-large">
+        <a href="{{ path('app_assessor_request_back') }}" class="btn">Retour</a>
+        {{ form_widget(form.valid_summary, { attr: {class: 'btn btn--blue'}}) }}
+    </div>
+
+    {{ form_end(form) }}
+</form>

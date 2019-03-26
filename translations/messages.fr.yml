@@ -531,3 +531,9 @@ ideas_workshop.status.draft: Brouillon
 ideas_workshop.status.pending: En cours
 ideas_workshop.status.unpublished: Dépublié
 ideas_workshop.status.finalized: Finalisé
+
+#
+# Assessor Request
+#
+assessor_request.request.success: Votre demande a bien été prise en compte.
+

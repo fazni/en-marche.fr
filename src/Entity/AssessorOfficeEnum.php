@@ -6,6 +6,6 @@ use MyCLabs\Enum\Enum;
 
 class AssessorOfficeEnum extends Enum
 {
-    public const HOLDER = 'Titulaire';
-    public const SUBSTITUTE = 'Suppléant';
+    public const HOLDER = 'holder';
+    public const SUBSTITUTE = 'substitute';
 }
