@@ -8,7 +8,7 @@
         <section class="assessor-manager">
             <header class="l__wrapper--slim b__nudge--bottom-large">
                 <h1 class="text--center text--large">
-                    Espace responsable assésseur
+                    Espace responsable assesseur
                 </h1>
                 <p class="text--center">
                     Zones gérées : {{ app.user.assessorManagedAreaCodesAsString }}
@@ -18,28 +18,33 @@
             <div class="l__wrapper assessor-manager__content">
                 {% set pages = [
                     {
-                        route: 'app_procuration_manager_requests',
-                        status: constant('AppBundle\\Procuration\\Filter\\ProcurationRequestFilters::UNPROCESSED'),
+                        route: 'app_assessor_manager_requests',
+                        status: constant('AppBundle\\Assessor\\Filter\\AssessorRequestFilters::UNPROCESSED'),
                         label: 'Demandes à traiter'
                     },
                     {
-                        route: 'app_procuration_manager_requests',
-                        status: constant('AppBundle\\Procuration\\Filter\\ProcurationRequestFilters::PROCESSED'),
+                        route: 'app_assessor_manager_requests',
+                        status: constant('AppBundle\\Assessor\\Filter\\AssessorRequestFilters::PROCESSED'),
                         label: 'Demandes traitées'
                     },
                     {
-                        route: 'app_procuration_manager_proposals',
-                        status: constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::UNASSOCIATED'),
+                        route: 'app_assessor_manager_vote_places',
+                        status: constant('AppBundle\\Assessor\\Filter\\VotePlaceFilters::UNASSOCIATED'),
                         label: 'Bureaux de vote disponibles'
                     },
                     {
-                        route: 'app_procuration_manager_proposals',
-                        status: constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::ASSOCIATED'),
-                        label: 'Bureaux de vote plein'
+                        route: 'app_assessor_manager_vote_places',
+                        status: constant('AppBundle\\Assessor\\Filter\\VotePlaceFilters::ASSOCIATED'),
+                        label: 'Bureaux de vote traités'
+                    },
+                    {
+                        route: 'app_assessor_manager_requests',
+                        status: constant('AppBundle\\Assessor\\Filter\\AssessorRequestFilters::DISABLED'),
+                        label: 'Demandes désactivés'
                     }
                 ] %}
 
-                <ul class="procuration-manager__tabs">
+                <ul class="assessor-manager__tabs">
                     {% for page in pages %}
                         <li class="{{ app.request.attributes.get('_route') == page.route and filters.status == page.status ? 'active' : '' }}">
                             <a href="{{ path(page.route, { status: page.status }) }}">
@@ -51,7 +56,7 @@
 
                 <hr />
 
-                {% block procuration_manager_content %}{% endblock %}
+                {% block assessor_manager_content %}{% endblock %}
             </div>
         </section>
     </main>

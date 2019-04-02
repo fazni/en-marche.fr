@@ -172,7 +172,7 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Responsable procurations',
                 ])
                 ->add('assessorManagedAreaCodesAsString', null, [
-                    'label' => 'Responsable assésseurs',
+                    'label' => 'Responsable assesseurs',
                 ])
                 ->add('coordinatorCitizenProjectArea', null, [
                     'label' => 'coordinator.label.codes.cp',
@@ -196,9 +196,9 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Est responsable procuration ?',
                 ])
             ->end()
-            ->with('Responsable assésseur', ['class' => 'col-md-3'])
+            ->with('Responsable assesseur', ['class' => 'col-md-3'])
                 ->add('isAssessorManager', 'boolean', [
-                    'label' => 'Est responsable assésseur ?',
+                    'label' => 'Est responsable assesseur ?',
                 ])
             ->end()
         ;
@@ -316,7 +316,7 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('assessorManagedAreaCodesAsString', TextType::class, [
                     'label' => 'assessors_manager',
                     'required' => false,
-                    'help' => "Laisser vide si l'adhérent n'est pas responsable assésseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
+                    'help' => "Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
                 ])
                 ->add('coordinatorCitizenProjectArea', CoordinatorManagedAreaType::class, [
                     'label' => 'coordinator.label.codes.cp',

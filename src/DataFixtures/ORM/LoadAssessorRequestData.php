@@ -13,8 +13,9 @@ class LoadAssessorRequestData extends Fixture
     {
         $votePlaceLilleWazemmes = $this->getReference('vote-place-lille-wazemmes');
         $votePlaceLilleJeanZay = $this->getReference('vote-place-lille-jean-zay');
+        $votePlaceBobigny = $this->getReference('vote-place-bobigny-blanqui');
 
-        $manager->persist($request1 = $this->createAssessorRequest(
+        $manager->persist($unmatchedrequest1 = $this->createAssessorRequest(
            'female',
            'Kepoura',
            'Adrienne',
@@ -28,32 +29,94 @@ class LoadAssessorRequestData extends Fixture
            'adrienne.kepoura@example.fr',
            '0612345678',
            'Lille',
+            '59000',
             AssessorOfficeEnum::HOLDER
         ));
 
-        $manager->persist($request2 = $this->createAssessorRequest(
+        $manager->persist($matchedrequest1 = $this->createAssessorRequest(
+            'male',
+            'Hytté',
+            'Prosper',
+            '10-07-1989',
+            'Paris',
+            '72 Rue du Faubourg Saint-Martin',
+            '93008',
+            'Paris',
+            'Bobigny',
+            '93008_0005',
+            'prosper.hytte@example.fr',
+            '0612345678',
+            'Bobigny',
+            '93008',
+            AssessorOfficeEnum::SUBSTITUTE
+        ));
+
+        $manager->persist($matchedrequest2 = $this->createAssessorRequest(
+            'male',
+            'Luc',
+            'Ratif',
+            '04-02-1992',
+            'Paris',
+            '70 Rue Saint-Martin',
+            '93008',
+            'Paris',
+            'Bobigny',
+            '93008_0005',
+            'luc.ratif@example.fr',
+            '0612345678',
+            'Bobigny',
+            '93008',
+            AssessorOfficeEnum::HOLDER
+        ));
+
+        $manager->persist($matchedrequest3 = $this->createAssessorRequest(
             'female',
-            'Kepoura',
-            'Adrienne',
-            '14-05-1973',
+            'Coptère',
+            'Elise',
+            '14-01-1986',
             'Lille',
-            '4 avenue du peuple Belge',
+            ' Pl. du Théâtre',
             '59000',
             'Lille',
             'Lille',
             '59350_0108',
-            'adrienne.kepoura@example.fr',
+            'elise.coptere@example.fr',
             '0612345678',
             'Lille',
+            '59000',
             AssessorOfficeEnum::HOLDER
         ));
 
-        $request1->addVotePlaceWish($votePlaceLilleWazemmes);
-        $request1->addVotePlaceWish($votePlaceLilleJeanZay);
-        $request2->addVotePlaceWish($votePlaceLilleJeanZay);
+        $manager->persist($this->createAssessorRequest(
+            'male',
+            'Sahalor',
+            'Aubin',
+            '12-08-1986',
+            'Lille',
+            ' Pl. du Théâtre',
+            '59000',
+            'Lille',
+            'Lille',
+            '59350_0108',
+            'aubin.sahalor@example.fr',
+            '0612345678',
+            'Lille',
+            '59000',
+            AssessorOfficeEnum::HOLDER,
+            null
+        ));
 
-        $votePlaceLilleWazemmes->addAssessorRequest($request1);
-        $votePlaceLilleJeanZay->addAssessorRequest($request2);
+        $unmatchedrequest1->addVotePlaceWish($votePlaceLilleWazemmes);
+        $unmatchedrequest1->addVotePlaceWish($votePlaceLilleJeanZay);
+
+        $matchedrequest1->addVotePlaceWish($votePlaceBobigny);
+        $matchedrequest1->process($votePlaceBobigny);
+
+        $matchedrequest2->addVotePlaceWish($votePlaceBobigny);
+        $matchedrequest2->process($votePlaceBobigny);
+
+        $matchedrequest3->addVotePlaceWish($votePlaceLilleWazemmes);
+        $matchedrequest3->process($votePlaceLilleWazemmes);
 
         $manager->flush();
     }
@@ -72,8 +135,10 @@ class LoadAssessorRequestData extends Fixture
         string $emailAddress,
         string $phoneNumber,
         string $assessorCity,
+        string $assessorPostalCode,
         string $office = AssessorOfficeEnum::SUBSTITUTE,
-        string $birthName = null
+        string $birthName = null,
+        bool $disabled = false
     ): AssessorRequest {
         $assessor = new AssessorRequest();
 
@@ -92,6 +157,11 @@ class LoadAssessorRequestData extends Fixture
         $assessor->getPhone()->setNationalNumber($phoneNumber);
         $assessor->setAssessorCity($assessorCity);
         $assessor->setOffice($office);
+        $assessor->setAssessorPostalCode($assessorPostalCode);
+
+        if ($disabled) {
+            $assessor->disable();
+        }
 
         return $assessor;
     }

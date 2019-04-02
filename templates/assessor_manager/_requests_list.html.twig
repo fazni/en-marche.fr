@@ -4,29 +4,24 @@
             {{ request.data.id }}
         </td>
         <td class="datagrid__table__col--left">
-            {{ request.data.firstNames }} {{ request.data.lastName }}<br />
+            {{ request.data.firstName }} {{ request.data.lastName }}<br />
             <span class="datagrid__table__col--hide-mobile">
                 <em>Lieu de vote :</em><br>
-                {{ request.data.votePostalCode }} {{ request.data.voteCityName }} {{ request.data.voteCountry }}
+                {{ request.data.assessorPostalCode }} {{ request.data.assessorCity }}
             </span>
             <br>
             <span class="datagrid__table__col--hide-mobile">
                 <em>Lieu de résidence :</em><br>
-                {{ request.data.postalCode }} {{ request.data.cityName }} {{ request.data.country }}
+                {{ request.data.postalCode }} {{ request.data.city }}
             </span>
         </td>
         <td>
             {% if not request.data.processed %}
                 <strong>En attente</strong>
             {% else %}
-                Traitée<br />
+                Traitée
                 (le {{ request.data.processedAt|date('d/m/Y à H:i') }})
             {% endif %}
-        </td>
-        <td class="datagrid__table__col--left">
-            {{ include('procuration_manager/_election_rounds.html.twig', {
-                rounds: request.data.electionRounds,
-            }, with_context=false) }}
         </td>
         <td>
             {{ request.matchingProxiesCount }}
@@ -35,11 +30,20 @@
             {{ request.data.createdAt|date('d/m/Y H:i') }}
         </td>
         <td>
-            <a href="{{ path('app_procuration_manager_request', {'id': request.data.id}) }}"
+            <a href="{{ path('app_assessor_manager_request', {'id': request.data.id}) }}"
                id="request-link-{{ request.data.id }}"
                target="_blank">
                 Afficher
-            </a>
+            </a><br>
+            {% if request.data.disabled %}
+                <a href="{{ path('app_assessor_manager_request_transform', { id: request.data.id, action: constant('AppBundle\\Entity\\ActionEnum::ACTION_ENABLE') }) }}">
+                    Réactiver
+                </a>
+            {% else %}
+                <a href="{{ path('app_assessor_manager_request_transform', { id: request.data.id, action: constant('AppBundle\\Entity\\ActionEnum::ACTION_DISABLE') }) }}">
+                    Désactiver
+                </a>
+            {% endif %}
         </td>
     </tr>
 {% endfor %}

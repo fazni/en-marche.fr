@@ -36,6 +36,7 @@ class LoadVotePlaceData extends Fixture
 
         $this->addReference('vote-place-lille-wazemmes', $votePlaceLilleWazemmes);
         $this->addReference('vote-place-lille-jean-zay', $votePlaceLilleJeanZay);
+        $this->addReference('vote-place-bobigny-blanqui', $votePlaceLilleJeanZay);
 
         $manager->flush();
     }

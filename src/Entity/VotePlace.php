@@ -21,6 +21,8 @@ class VotePlace
 {
     use EntityTimestampableTrait;
 
+    public const MAX_ASSESSOR_REQUESTS = 2;
+
     /**
      * @var int
      *
@@ -90,8 +92,20 @@ class VotePlace
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\AssessorRequest", mappedBy="votePlace")
+     *
+     * @Assert\Choice(
+     *     max=VotePlace::MAX_ASSESSOR_REQUESTS,
+     *     maxMessage="vote_place.assessor_request.max"
+     * )
      */
     private $assessorRequests;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $full = false;
 
     public function __construct()
     {
@@ -183,5 +197,29 @@ class VotePlace
     public function removeAssessorRequest(AssessorRequest $assessorRequests): void
     {
         $this->assessorRequests->removeElement($assessorRequests);
+    }
+
+    public function isFull(): bool
+    {
+        return $this->full;
+    }
+
+    public function setFull(bool $full): void
+    {
+        $this->full = $full;
+    }
+
+    public function getAvailableOfficesAsString(): string
+    {
+        $availableOffices = AssessorOfficeEnum::toArray();
+
+        /** @var AssessorRequest $assessorRequest */
+        foreach ($this->assessorRequests as $assessorRequest) {
+            if (\in_array($assessorRequest->getOffice(), $availableOffices)) {
+                unset($availableOffices[array_search($assessorRequest->getOffice(), $availableOffices)]);
+            }
+        }
+
+        return implode("\n", $availableOffices);
     }
 }

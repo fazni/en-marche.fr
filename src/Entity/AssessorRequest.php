@@ -189,6 +189,15 @@ class AssessorRequest
      *
      * @ORM\Column(length=15)
      *
+     * @Assert\Length(max=15)
+     */
+    private $assessorPostalCode;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(length=15)
+     *
      * @Assert\NotBlank(message="assessor.office.invalid_choice")
      * @Assert\Choice(
      *     callback={"AppBundle\Entity\AssessorOfficeEnum", "toArray"},
@@ -207,7 +216,7 @@ class AssessorRequest
     public $recaptcha = '';
 
     /**
-     * @var VotePlace
+     * @var VotePlace|null
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotePlace", inversedBy="assessorRequests")
      */
@@ -221,10 +230,57 @@ class AssessorRequest
      */
     private $votePlaceWishes;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $processed = false;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $processedAt;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $disabled = false;
+
     public function __construct()
     {
         $this->phone = static::createPhoneNumber();
         $this->votePlaceWishes = new ArrayCollection();
+    }
+
+    public function process(VotePlace $votePlace): void
+    {
+        $votePlace->addAssessorRequest($this);
+
+        if (VotePlace::MAX_ASSESSOR_REQUESTS == $votePlace->getAssessorRequests()->count()) {
+            $votePlace->setFull(true);
+        }
+
+        $this->votePlace = $votePlace;
+        $this->processed = true;
+        $this->processedAt = new \DateTime();
+    }
+
+    public function unprocess(): void
+    {
+        if ($this->votePlace->isFull()) {
+            $this->votePlace->setFull(false);
+        }
+
+        $this->votePlace->removeAssessorRequest($this);
+
+        $this->votePlace = null;
+        $this->processed = false;
+        $this->processedAt = null;
     }
 
     private static function createPhoneNumber(int $countryCode = 33, string $number = null): PhoneNumber
@@ -404,7 +460,7 @@ class AssessorRequest
         $this->recaptcha = $recaptcha;
     }
 
-    public function getVotePlace(): VotePlace
+    public function getVotePlace(): ?VotePlace
     {
         return $this->votePlace;
     }
@@ -429,5 +485,50 @@ class AssessorRequest
     public function removeVotePlaceWish(VotePlace $votePlace): void
     {
         $this->votePlaceWishes->removeElement($votePlace);
+    }
+
+    public function getAssessorPostalCode(): string
+    {
+        return $this->assessorPostalCode;
+    }
+
+    public function setAssessorPostalCode(string $assessorPostalCode): void
+    {
+        $this->assessorPostalCode = $assessorPostalCode;
+    }
+
+    public function isProcessed(): bool
+    {
+        return $this->processed;
+    }
+
+    public function setProcessed(bool $processed): void
+    {
+        $this->processed = $processed;
+    }
+
+    public function getProcessedAt(): ?\DateTime
+    {
+        return $this->processedAt;
+    }
+
+    public function setProcessedAt(\DateTime $processedAt): void
+    {
+        $this->processedAt = $processedAt;
+    }
+
+    public function enable(): void
+    {
+        $this->disabled = false;
+    }
+
+    public function disable(): void
+    {
+        $this->disabled = true;
+    }
+
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
     }
 }
