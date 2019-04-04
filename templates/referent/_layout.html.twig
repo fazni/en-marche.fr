@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title 'Espace référent' %}
+{% block page_title 'Mon espace référent' %}
 {% block canonical_url url('app_referent_users') %}
 
 {% block banner '' %}
@@ -22,25 +22,67 @@
                             <p>Dernière connexion : <span>01/02/04</span></p>
                         </div>
                         <p class="report">🐛 Bug ? Nouveau besoin ?
-                            <a href="https://en-marche.helprace.com/" target="_blank" class="text--body text--blue--dark text--small link--no-decor">Écrivez-nous !</a>
+                            <a href="https://en-marche.helprace.com/" target="_blank" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
                         </p>
                     </div>
                     <div class="second-content">
-                        <h1 class="text--center text--large">
+                        <h1 class="page-title">
                             {{ block('page_title') }}
                         </h1>
                         <div class="direct-actions">
-                            <a href="" class="btn">+ Nouveau message</a>
+                            <a href="" class="btn btn--blue">+ Nouveau message</a>
                             <a href="{{ path('app_referent_events_create') }}" class="btn">+ Créer un événement</a>
                         </div>
                     </div>
-                    <div class="terciary-content">
-                        menuu
-                    </div>
+
+                    <nav class="manager-header__menu">
+                        <ul>
+                            {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_events*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_users*', 'app_referent_jecoute_*']) %}
+
+                            <li class="{{ is_active_route(app.request, 'app_referent_events*') ? 'active' : '' }}">
+                                <a href="{{ path('app_referent_events') }}">Événements</a>
+                            </li>
+
+                            <li class="{{ is_active_route(app.request, 'app_referent_committees') ? 'active' : '' }}">
+                                <a href="{{ path('app_referent_committees') }}">Comités</a>
+                            </li>
+
+                            <li class="">
+                                <a href="">Projets citoyens</a>
+                            </li>
+
+                            <li class="">
+                                <a href="">Adhérents</a>
+                            </li>
+
+                            <li class="{{ is_active_route(app.request, 'app_referent_jecoute_*') ? 'active' : '' }}">
+                                <a href="{{ path('app_referent_jecoute_local_surveys_list') }}">J'écoute</a>
+                            </li>
+                        </ul>
+
+                        <ul>
+                            {% if is_canary_enabled() %}
+                                <li class="{{ is_active_route(app.request, 'app_message_referent_*') ? 'active' : '' }}">
+                                    <a href="{{ path('app_message_referent_list') }}">Mes messages</a>
+                                </li>
+                            {% endif %}
+
+                            <li class="{{ is_active_route(app.request, 'app_referent_institutional_events*') ? 'active' : '' }}">
+                                <a href="{{ path('app_referent_institutional_events') }}">Mes réunions privées</a>
+                            </li>
+
+                            {% if is_granted('IS_ROOT_REFERENT') %}
+                                <li class="{{ is_active_route(app.request, 'app_referent_organizational_chart') ? 'active' : '' }}">
+                                    <a href="{{ path('app_referent_organizational_chart') }}">Mon équipe</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+
                 </div>
             </header>
 
-            <header class="l__wrapper--slim b__nudge--bottom-large b__nudge--top">
+            <!-- <header class="l__wrapper--slim b__nudge--bottom-large b__nudge--top">
                 <h1 class="text--center text--large">
                     {{ block('page_title') }}
                 </h1>
@@ -51,10 +93,12 @@
                         🐛 Bug ? Nouveau besoin ? Faites-le nous savoir.
                     </a>
                 </p>
-            </header>
+            </header> -->
 
             <div class="l__wrapper procuration-manager__content text--body">
-                <nav class="referent-menu">
+
+                <br /><br /><br /><br /><br />
+                <!-- <nav class="referent-menu">
                     <ul>
                         {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_events*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_users*', 'app_referent_jecoute_*']) %}
 
@@ -94,7 +138,7 @@
                             <a href="{{ path('app_referent_jecoute_local_surveys_list') }}">J'écoute</a>
                         </li>
                     </ul>
-                </div>
+                </div> -->
 
                 {% block referent_content %}{% endblock %}
             </div>

@@ -3,14 +3,15 @@
     .manager-header {
         background-color: #f6f9fc;
         min-height: 270px;
-        padding-top: 38px;
 
         .first-content {
             display: flex;
+            flex-wrap: wrap;
             flex-direction: row;
             justify-content: space-between;
 
             .el {
+                margin: 38px 0;
                 p {
                     font-family: $font-roboto;
                     font-size: 14px;
@@ -24,14 +25,76 @@
             }
 
             .report {
+                margin: 38px 0;
                 text-transform: uppercase;
+                font-size: 13px;
+                color: #7b889b;
+                letter-spacing: 1px;
             }
         }
 
         .second-content {
             display: flex;
+            flex-wrap: wrap;
             flex-direction: row;
             justify-content: space-between;
+            align-items: center;
+            margin-bottom: 55px;
+
+            h1.page-title {
+                font-size: 38px;
+                letter-spacing: -0.5px;
+            }
+        }
+
+        &__menu {
+            font-family: $font-roboto;
+            font-weight: normal;
+            font-size: 18px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            ul {
+                display: inline-block;
+                border-bottom: 1px solid #e5e9ee;
+
+                li {
+                    display: inline-block;
+                    margin: 0 30px -1px 0;
+
+                    &:first-child {
+                        margin-left: 0;
+                    }
+
+                    &:last-child {
+                        margin-right: 0;
+                    }
+
+                    & a {
+                        display: inline-block;
+                        padding: 5px 0 20px 0;
+                        color: #7b889b;
+                        border-bottom: 3px solid transparent;
+
+                        &:hover {
+                            color: $black;
+                            border-bottom-color: #46d5c7;
+                        }
+                    }
+
+                    &:hover {
+                        & .toggle-menu {
+                            display: block;
+                        }
+                    }
+
+                    &.active a {
+                        color: $black;
+                        border-bottom-color: #46d5c7;
+                    }
+                }
+            }
         }
     }
 
