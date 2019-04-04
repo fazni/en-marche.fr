@@ -26,12 +26,12 @@
                         </p>
                     </div>
                     <div class="second-content">
-                        <h1 class="page-title">
+                        <h1 class="page-title text--large">
                             {{ block('page_title') }}
                         </h1>
                         <div class="direct-actions">
                             <a href="" class="btn btn--blue">+ Nouveau message</a>
-                            <a href="{{ path('app_referent_events_create') }}" class="btn">+ Créer un événement</a>
+                            <a href="{{ path('app_referent_events_create') }}" class="btn btn--ghosting--blue">+ Créer un événement</a>
                         </div>
                     </div>
 
@@ -51,18 +51,16 @@
                                 <a href="">Projets citoyens</a>
                             </li>
 
-                            <li class="">
-                                <a href="">Adhérents</a>
+                            <li class="{{ is_active_route(app.request, 'app_referent_users*') ? 'active' : '' }}">
+                                <a href="{{ path('app_referent_users') }}">Adhérents</a>
                             </li>
 
                             <li class="{{ is_active_route(app.request, 'app_referent_jecoute_*') ? 'active' : '' }}">
                                 <a href="{{ path('app_referent_jecoute_local_surveys_list') }}">J'écoute</a>
                             </li>
-                        </ul>
 
-                        <ul>
                             {% if is_canary_enabled() %}
-                                <li class="{{ is_active_route(app.request, 'app_message_referent_*') ? 'active' : '' }}">
+                                <li class="{{ is_active_route(app.request, 'app_message_referent_*') ? 'menu-right active' : 'menu-right' }}">
                                     <a href="{{ path('app_message_referent_list') }}">Mes messages</a>
                                 </li>
                             {% endif %}
@@ -98,7 +96,7 @@
             <div class="l__wrapper procuration-manager__content text--body">
 
                 <br /><br /><br /><br /><br />
-                <!-- <nav class="referent-menu">
+                <nav class="referent-menu">
                     <ul>
                         {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_events*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_users*', 'app_referent_jecoute_*']) %}
 
@@ -138,7 +136,7 @@
                             <a href="{{ path('app_referent_jecoute_local_surveys_list') }}">J'écoute</a>
                         </li>
                     </ul>
-                </div> -->
+                </div>
 
                 {% block referent_content %}{% endblock %}
             </div>

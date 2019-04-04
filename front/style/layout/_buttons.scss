@@ -191,6 +191,17 @@
     }
 }
 
+@mixin btn--ghosting--blue {
+    color: $blue--dark;
+    background: transparent;
+    border-color: $blue--dark;
+
+    &:hover {
+        background-color: $blue-hover;
+        border-color: $blue-hover;
+    }
+}
+
 @mixin btn--blue--adi {
     color: white !important;
     background: $blue--adi;
@@ -347,6 +358,10 @@ button.btn {
 
     &--blue {
         @include btn--blue;
+    }
+
+    &--ghosting--blue {
+        @include btn--ghosting--blue;
     }
 
     &--blue--adi {

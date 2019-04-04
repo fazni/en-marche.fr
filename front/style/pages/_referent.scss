@@ -2,13 +2,13 @@
 
     .manager-header {
         background-color: #f6f9fc;
-        min-height: 270px;
 
         .first-content {
             display: flex;
             flex-wrap: wrap;
             flex-direction: row;
             justify-content: space-between;
+            margin-bottom: 20px;
 
             .el {
                 margin: 38px 0;
@@ -39,29 +39,36 @@
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 55px;
+            margin-bottom: 30px;
 
-            h1.page-title {
-                font-size: 38px;
-                letter-spacing: -0.5px;
+            // h1.page-title {
+            //     font-size: 38px;
+            //     letter-spacing: -0.5px;
+            // }
+
+            .direct-actions {
+                font-size: 0;
+
+                .btn:first-child {
+                    margin-right: 10px;
+                }
             }
         }
 
         &__menu {
             font-family: $font-roboto;
             font-weight: normal;
-            font-size: 18px;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
+            font-size: 17px;
 
             ul {
-                display: inline-block;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
                 border-bottom: 1px solid #e5e9ee;
 
                 li {
                     display: inline-block;
-                    margin: 0 30px -1px 0;
+                    margin: 10px 25px -1px 0;
 
                     &:first-child {
                         margin-left: 0;
@@ -73,7 +80,7 @@
 
                     & a {
                         display: inline-block;
-                        padding: 5px 0 20px 0;
+                        padding: 5px 0 14px 0;
                         color: #7b889b;
                         border-bottom: 3px solid transparent;
 
@@ -91,14 +98,27 @@
 
                     &.active a {
                         color: $black;
+                        font-weight: bold;
                         border-bottom-color: #46d5c7;
                     }
                 }
             }
         }
+
+        // I know, it's a custom size min-width... but goes great like this
+        @media (min-width: 1150px) {
+            &__menu {
+                ul {
+                    li {
+                        &.menu-right {
+                            margin-left: auto;
+                        }
+                    }
+                }
+            }
+        }
+
     }
-
-
 
 
     h2 {
