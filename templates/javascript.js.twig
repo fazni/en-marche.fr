@@ -408,3 +408,23 @@ $(document).ready(function() {
         formElected.triggerHandler('click');
     })('{{ checkboxSelector }}', '{{ selectSelector }}');
 {% endmacro %}
+
+{% macro changeStateRegionFieldsVisibility(countrySelector, stateSelector) %}
+    var countryField = $('{{ countrySelector }}');
+
+    changeStateRegionFieldsVisibility();
+
+    countryField.change(function() {
+        changeStateRegionFieldsVisibility();
+    });
+
+    function changeStateRegionFieldsVisibility() {
+        var stateField = $('{{ stateSelector }}');
+
+        if ('FR' === countryField.val()) {
+            stateField.addClass('hidden');
+        } else {
+            stateField.removeClass('hidden');
+        }
+    }
+{% endmacro %}
