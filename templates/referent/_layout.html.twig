@@ -14,6 +14,32 @@
 {% block content %}
     <main>
         <section class="referent procuration-manager b__nudge--bottom-huge">
+            <header class="manager-header">
+                <div class="l__wrapper">
+                    <div class="first-content">
+                        <div class="el">
+                            <p>Vous gérez : <span>{{ app.user.managedArea.tags|join(', ') }}</span></p>
+                            <p>Dernière connexion : <span>01/02/04</span></p>
+                        </div>
+                        <p class="report">🐛 Bug ? Nouveau besoin ?
+                            <a href="https://en-marche.helprace.com/" target="_blank" class="text--body text--blue--dark text--small link--no-decor">Écrivez-nous !</a>
+                        </p>
+                    </div>
+                    <div class="second-content">
+                        <h1 class="text--center text--large">
+                            {{ block('page_title') }}
+                        </h1>
+                        <div class="direct-actions">
+                            <a href="" class="btn">+ Nouveau message</a>
+                            <a href="{{ path('app_referent_events_create') }}" class="btn">+ Créer un événement</a>
+                        </div>
+                    </div>
+                    <div class="terciary-content">
+                        menuu
+                    </div>
+                </div>
+            </header>
+
             <header class="l__wrapper--slim b__nudge--bottom-large b__nudge--top">
                 <h1 class="text--center text--large">
                     {{ block('page_title') }}

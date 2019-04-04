@@ -1,4 +1,43 @@
 .referent {
+
+    .manager-header {
+        background-color: #f6f9fc;
+        min-height: 270px;
+        padding-top: 38px;
+
+        .first-content {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            .el {
+                p {
+                    font-family: $font-roboto;
+                    font-size: 14px;
+                    color: #7b889b;
+                    margin: 0;
+                    span {
+                        color: $black;
+                        font-weight: bold;
+                    }
+                }
+            }
+
+            .report {
+                text-transform: uppercase;
+            }
+        }
+
+        .second-content {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+
+
+
+
     h2 {
         font-family: $font-gillsans;
     }
