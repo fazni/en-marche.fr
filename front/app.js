@@ -223,15 +223,15 @@ class App {
         });
     }
 
-    runProcurationProxy() {
+    runProcurationProxy(countrySelector, stateSelector) {
         System.import('pages/procuration_proxy').catch((error) => { throw error; }).then((module) => {
-            module.default();
+            module.default(countrySelector, stateSelector);
         });
     }
 
-    runProcurationRequest() {
+    runProcurationRequest(countrySelector, stateSelector) {
         System.import('pages/procuration_request').catch((error) => { throw error; }).then((module) => {
-            module.default();
+            module.default(countrySelector, stateSelector);
         });
     }
 }

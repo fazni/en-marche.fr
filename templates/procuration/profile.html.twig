@@ -11,9 +11,10 @@
     <script src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            App.runProcurationRequest();
-
-            {{ js.changeStateRegionFieldsVisibility('#'~procuration_form.country.vars.id, '#'~procuration_form.state.vars.id) }}
+            App.runProcurationRequest(
+                '{{ procuration_form.country.vars.id }}',
+                '{{ procuration_form.state.vars.id }}'
+            );
         });
     </script>
 {% endblock %}
