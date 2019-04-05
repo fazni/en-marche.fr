@@ -23,8 +23,8 @@
     <script type="text/javascript">
         Kernel.onLoad(function() {
             App.runProcurationProxy(
-                '{{ procuration_form.country.vars.id }}',
-                '{{ procuration_form.state.vars.id }}'
+                '#{{ procuration_form.country.vars.id }}',
+                '#{{ procuration_form.state.vars.id }}'
             );
 
             App.createVoteLocationSelector(

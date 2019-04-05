@@ -3,8 +3,8 @@ import AddressObject from '../services/address/AddressObject';
 import { changeStateFieldVisibility } from '../services/form/changeStateFieldVisibility';
 
 export default (countrySelector, stateSelector) => {
-    const country = dom('#'+countrySelector);
-    const state = dom('#'+stateSelector);
+    const country = dom(countrySelector);
+    const state = dom(stateSelector);
 
     (new AutocompletedAddressForm(
         dom('.address-autocomplete'),
