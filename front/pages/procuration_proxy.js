@@ -18,5 +18,7 @@ export default (countrySelector, stateSelector) => {
         )
     )).buildWidget();
 
-    on(country, 'change', changeStateFieldVisibility(country, state));
+    changeStateFieldVisibility(country, state);
+
+    on(country, 'change', () => changeStateFieldVisibility(country, state));
 };
