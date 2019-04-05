@@ -305,55 +305,25 @@
         }
     }
 
-    & nav.referent-menu,
-    & div.referent-sub-menu {
-        text-align: center;
-        margin-bottom: 20px;
+    ///
 
-        ul {
-            display: inline-block;
-            border-bottom: 1px solid $gray--light;
+    .datagrid__manager-table {
+        text-align: left;
+        font-family: $font-roboto;
+        font-size: 14px;
 
-            li {
-                display: inline-block;
-                margin: 0 20px;
+        thead {
+            background-color: #f6f9fc;
+            color: #7b889b;
+            font-size: 13px;
+            text-transform: uppercase;
 
-                &:first-child {
-                    margin-left: 0;
-                }
+            tr {
+                height: 48px;
 
-                &:last-child {
-                    margin-right: 0;
-                }
-
-                & a {
-                    display: inline-block;
-                    padding: 10px 0;
-                    border-bottom: 2px solid transparent;
-
-                    &:hover {
-                        color: $blue-hover;
-                        border-bottom-color: $blue-hover;
-                    }
-                }
-
-                &:hover {
-                    & .toggle-menu {
-                        display: block;
-                    }
-                }
-
-                &.active a {
-                    color: $blue-hover;
-                    border-bottom-color: $blue-hover;
-                }
+                th:first-child { padding-left: 20px; }
+                th:last-child { padding-right: 20px; }
             }
-        }
-    }
-
-    & div.referent-sub-menu {
-        ul {
-            border: 0 none;
         }
     }
 }
