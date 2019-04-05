@@ -200,7 +200,7 @@ class CommitteeManagerController extends Controller
             ]);
         }
 
-        return $this->render('committee/promote_host.html.twig', [
+        return $this->render('committee_manager/promote_host.html.twig', [
             'member' => $member,
             'committee' => $committee,
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
@@ -237,7 +237,7 @@ class CommitteeManagerController extends Controller
             ]);
         }
 
-        return $this->render('committee/demote_host.html.twig', [
+        return $this->render('committee_manager/demote_host.html.twig', [
             'member' => $member,
             'committee' => $committee,
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),

@@ -6,7 +6,6 @@ use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\Controller\EntityControllerTrait;
-use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Form\CommitteeFeedItemMessageType;
@@ -136,28 +135,6 @@ class CommitteeController extends Controller
         $this->addFlash('info', 'committee.message_deleted');
 
         return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
-    }
-
-    /**
-     * @Route("/timeline", name="app_committee_timeline")
-     * @Method("GET")
-     * @Security("is_granted('SHOW_COMMITTEE', committee)")
-     */
-    public function timelineAction(Request $request, Committee $committee): Response
-    {
-        $timeline = $this->getCommitteeManager()->getTimeline(
-            $committee,
-            $this->getParameter('timeline_max_messages'),
-            $request->query->getInt('offset', 0)
-        );
-
-        return $this->render('committee/timeline/feed.html.twig', [
-            'committee' => $committee,
-            'committee_timeline' => $timeline,
-            'committee_timeline_forms' => $this->createTimelineDeleteForms($timeline),
-            'has_role_adherent' => $this->getUser() instanceof Adherent && $this->getUser()->isAdherent(),
-            'has_role_user' => $this->isGranted('ROLE_USER'),
-        ]);
     }
 
     /**

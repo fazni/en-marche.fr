@@ -277,6 +277,10 @@ abstract class AbstractMessageController extends Controller
                 $baseTemplate = 'message/_base_deputy.html.twig';
                 break;
 
+            case AdherentMessageTypeEnum::COMMITTEE:
+                $baseTemplate = 'message/_base_committee.html.twig';
+                break;
+
             default:
                 $baseTemplate = 'message/_base.html.twig';
                 break;

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Espace animateur' %}
+
+{% block banner '' %}
+
+{% block content %}
+    {% set al_committee = get_supervised_committee(app.user) %}
+
+    <main>
+        <section class="procuration-manager b__nudge--bottom-huge adherent-space">
+            <header class="l__wrapper--slim b__nudge--bottom-large b__nudge--top">
+                <h1 class="text--center text--large">Espace animateur</h1>
+                <p class="text--center text--body">
+                    <strong>Vous gérez :</strong> {{ al_committee.name }}
+                </p>
+            </header>
+
+            <div class="l__wrapper procuration-manager__content text--body">
+                <nav class="adherent-space-menu">
+                    <ul>
+                        <li class="{{ is_active_route(app.request, ['app_committee_manager_list_members', 'app_committee_demote_host', 'app_committee_promote_host']) ? 'active' : '' }}">
+                            <a href="{{ path('app_committee_manager_list_members', {slug: al_committee.slug }) }}">Mes adhérents</a>
+                        </li>
+
+                        <li class="{{ is_active_route(app.request, 'app_committee_manager_add_event') ? 'active' : '' }}">
+                            <a href="{{ path('app_committee_manager_add_event', {slug: al_committee.slug}) }}">Créer un événement</a>
+                        </li>
+
+                        {% if is_canary_enabled() %}
+                            <li class="{{ is_active_route(app.request, 'app_message_committee_*') ? 'active' : '' }}">
+                                <a href="{{ path('app_message_committee_list') }}">Envoyer un message</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+
+                {% block committee_content %}{% endblock %}
+            </div>
+        </section>
+    </main>
+{% endblock %}

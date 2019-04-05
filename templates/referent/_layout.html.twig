@@ -13,7 +13,7 @@
 
 {% block content %}
     <main>
-        <section class="referent procuration-manager b__nudge--bottom-huge">
+        <section class="referent procuration-manager b__nudge--bottom-huge adherent-space">
             <header class="l__wrapper--slim b__nudge--bottom-large b__nudge--top">
                 <h1 class="text--center text--large">
                     {{ block('page_title') }}
@@ -28,7 +28,7 @@
             </header>
 
             <div class="l__wrapper procuration-manager__content text--body">
-                <nav class="referent-menu">
+                <nav class="adherent-space-menu">
                     <ul>
                         {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_events*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_users*', 'app_referent_jecoute_*']) %}
 
@@ -50,7 +50,7 @@
                     </ul>
                 </nav>
 
-                <div class="referent-sub-menu" {{ not is_mobilisation_links ? 'style="display: none;"' : '' }}>
+                <div class="adherent-space-sub-menu" {{ not is_mobilisation_links ? 'style="display: none;"' : '' }}>
                     <ul>
                         <li class="{{ is_active_route(app.request, 'app_referent_events*') ? 'active' : '' }}">
                             <a href="{{ path('app_referent_events') }}">Événements</a>
