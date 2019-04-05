@@ -310,6 +310,7 @@
     .datagrid__manager-table {
         text-align: left;
         font-family: $font-roboto;
+        color: $dark;
         font-size: 14px;
 
         thead {
@@ -325,6 +326,33 @@
                 th:last-child { padding-right: 20px; }
             }
         }
+
+        tbody {
+
+            tr {
+                height: 68px;
+                border-bottom: solid 1px #e1e5ea;
+
+                td {
+                    padding: 16px 0;
+                    line-height: normal;
+
+                    a {
+                        color: #1d5fd1;
+                        border-color: #1d5fd1;
+
+                        &.person {
+                            color: $dark;
+                            border-color: $dark;
+                        }
+                    }
+                }
+
+                td:first-child { padding-left: 20px; }
+                td:last-child { padding-right: 20px; }
+            }
+        }
+
     }
 }
 
